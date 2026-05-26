@@ -3,12 +3,13 @@ import pygame, os
 def main():
     onboarding()
     pygame.mixer.init()
-    
+
+    current_song = ""
+    current_length = 0.0    
     while True:
         song_paths = os.listdir("songs")
         song_paths.sort()
         song_names = [s.replace(".ogg", "") for s in song_paths]
-        song = ""
 
         command = input(">>> ").lower()
         args = command.split(" ")
@@ -26,8 +27,10 @@ def main():
                         print("Second argument should be song name or song not found")
                     else:
                         file_path = os.path.join("songs", args[1] + ".ogg")
+                        current_song = file_path
                         pygame.mixer.music.load(file_path)
                         pygame.mixer.music.play()
+            
             case "list":
                 if args[1] == None:
                     print("'List --help' for help")
@@ -35,20 +38,32 @@ def main():
                     help_list()
                 else:
                     show_list(song_names)
+            
             case "pause":
                 if args[1] == None:
-                    print("'Pause --help' for help")
+                    pygame.mixer.music.pause()
                 elif args[1] == "--help":
                     help_pause()
-                else:
-                    pygame.mixer.music.pause()
+            
             case "resume":
                 if args[1] == None:
-                    print("'Resume --help' for help")
+                    pygame.mixer.music.unpause()
                 elif args[1] == "--help":
                     help_resume()
-                else:
-                    pygame.mixer.music.unpause()
+            
+            case "stop":
+                if args[1] == None:
+                    pygame.mixer.music.unload()
+                elif args[1] == "--help":
+                    help_stop()
+
+            case "skip":
+                if args[1] == None:
+                    sound = pygame.mixer.Sound(current_song)
+                    pygame.mixer.music.set_pos(sound.get_length())
+                elif args[1] == "--help":
+                    help_skip()
+
             case "queue":
                 if args[1] == None:
                     print("'Queue --help' for help")
@@ -77,6 +92,9 @@ def help_resume():
 def help_stop():
     pass
 
+def help_skip():
+    pass
+
 def help_queue():
     pass
 
@@ -101,6 +119,7 @@ List
 Pause
 Resume
 Stop
+Skip
 Queue
 Shuffle
 Commands
@@ -114,6 +133,7 @@ List
 Pause
 Resume
 Stop
+Skip
 Queue
 Shuffle
 Commands""")
