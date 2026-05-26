@@ -1,0 +1,122 @@
+import pygame, os
+
+def main():
+    onboarding()
+    pygame.mixer.init()
+    
+    while True:
+        song_paths = os.listdir("songs")
+        song_paths.sort()
+        song_names = [s.replace(".ogg", "") for s in song_paths]
+        song = ""
+
+        command = input(">>> ").lower()
+        args = command.split(" ")
+        args.append(None) # Workaround for IndexError thrown if args[1] == '--help' if user passes only 1 arg
+
+        match args[0]:
+            case "play":
+                if args[1] == None:
+                    print("'Play --help' for help")
+                elif args[1] == "--help":
+                    help_play()
+                else:
+                    lowercase_names = [s.lower() for s in song_names]
+                    if args[1].rstrip(".ogg") not in lowercase_names:
+                        print("Second argument should be song name or song not found")
+                    else:
+                        file_path = os.path.join("songs", args[1] + ".ogg")
+                        pygame.mixer.music.load(file_path)
+                        pygame.mixer.music.play()
+            case "list":
+                if args[1] == None:
+                    print("'List --help' for help")
+                if args[1] == "--help":
+                    help_list()
+                else:
+                    show_list(song_names)
+            case "pause":
+                if args[1] == None:
+                    print("'Pause --help' for help")
+                elif args[1] == "--help":
+                    help_pause()
+                else:
+                    pygame.mixer.music.pause()
+            case "resume":
+                if args[1] == None:
+                    print("'Resume --help' for help")
+                elif args[1] == "--help":
+                    help_resume()
+                else:
+                    pygame.mixer.music.unpause()
+            case "queue":
+                if args[1] == None:
+                    print("'Queue --help' for help")
+                elif args[1] == "--help":
+                    help_queue()
+                else:
+                    lowercase_names = [s.lower() for s in song_names]
+                    if args[1].rstrip(".ogg") not in lowercase_names:
+                        print("Second argument should be song name or song not found")
+                    else:
+                        file_path = os.path.join("songs", args[1] + ".ogg")
+                        pygame.mixer.music.queue(file_path)
+
+def help_play():
+    pass
+
+def help_list():
+    pass
+
+def help_pause():
+    pass
+
+def help_resume():
+    pass
+
+def help_stop():
+    pass
+
+def help_queue():
+    pass
+
+def help_shuffle():
+    pass
+
+
+def show_list(song_names):
+    for i in range(len(song_names)):
+        if i > 1 and i % 10 == 0:
+            print("Enter any key other than 'Q' as a command to continue listing")
+            if input(">>> ").lower() == "q":
+                break
+        print(song_names[i])
+
+def onboarding():
+    print("""
+Welcome to the clmp (command line music player)
+Here is a list of commands
+Play
+List
+Pause
+Resume
+Stop
+Queue
+Shuffle
+Commands
+For help with any command, enter a command followed by '--help'
+To see this list again, enter 'Commands' as a command""")
+
+def commands():
+    print("""
+Play
+List
+Pause
+Resume
+Stop
+Queue
+Shuffle
+Commands""")
+
+if __name__ == "__main__":
+    main()
