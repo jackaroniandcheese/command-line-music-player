@@ -12,7 +12,7 @@ def main():
         song_names = [s.replace(".ogg", "") for s in song_paths]
 
         command = input(">>> ").lower()
-        args = command.split(" ")
+        args = command.split(" ", 1)
         args.append(None) # Workaround for IndexError thrown if args[1] == '--help' if user passes only 1 arg
 
         match args[0]:
