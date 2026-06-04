@@ -5,7 +5,6 @@ def main():
     pygame.mixer.init()
 
     current_song = ""
-    current_length = 0.0    
     while True:
         song_paths = os.listdir("songs")
         song_paths.sort()
@@ -76,6 +75,7 @@ def main():
                     else:
                         file_path = os.path.join("songs", args[1] + ".ogg")
                         pygame.mixer.music.queue(file_path)
+       
 
 def help_play():
     pass
@@ -84,22 +84,27 @@ def help_list():
     pass
 
 def help_pause():
-    pass
+    print("""
+Pause is used to pause the current song. Pausing a song will not unload the song from the player, meaning a simple 'Resume' command will
+continue playing your music. For more info on the 'Resume' command enter the command 'Resume --help'.
+    """
 
 def help_resume():
-    pass
+    print("Resume is used to unpause a currently paused track. For more info on pausing, use 'Pause --help'."
 
 def help_stop():
     pass
 
 def help_skip():
-    pass
+    print("Skip is used to skip a song. If there is no song in queue the command will act similarly to the 'Stop' command")
 
 def help_queue():
-    pass
+    print("""
+Queue is used to set a song to play at the end of the current song. Due to limitations of pygame, only one song can be queued at a time.
+Attempting to queue a song while another song is queued will result in the new queued song overwriting the previous queued song. The song
+playing will remain unaffected.
+""")
 
-def help_shuffle():
-    pass
 
 
 def show_list(song_names):
