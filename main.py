@@ -1,5 +1,5 @@
 import pygame, os
-
+from functions import *
 
 def main():
     print("""
@@ -91,69 +91,13 @@ Here is a list of commands""")
                     help_volume()
                 elif args[1] == "--status":
                     print(f"Volume is at {pygame.mixer.music.get_volume()}")
-                elif 0 > int(args[1]) > 100:
+                elif int(args[1]) < 0 or int(args[1]) > 100:
                     print("Volume must be between 0 and 100")
                 elif 0 <= int(args[1]) <= 100:
                     pygame.mixer.music.set_volume(int(args[1]) / 100)
 
             case "commands":
                 commands()
-
-
-def help_play():
-    print("""
-Play is used to play a song. The syntax is 'Play [song title]'. Using the play command while a song is already playing will
-cause the CLMP to skip the currently playing song and begin whichever song you requested. In order to queue a song, use the
-'Queue' command. Use 'Queue --help' for more info on Queue
-""")
-
-
-def help_list():
-    print("""
-List is used to list all the songs in the songs directory. It lists items 10 at a time as to not hijack your terminal window in song names.
-Use 'Q' to stop listing, or press any other key to continue listing the next 10 songs.
-""")
-
-
-def help_pause():
-    print("""
-Pause is used to pause the current song. Pausing a song will not unload the song from the player, meaning a simple 'Resume' command will
-continue playing your music. For more info on the 'Resume' command enter the command 'Resume --help'.
-""")
-
-
-def help_resume():
-    print("""
-Resume is used to unpause a currently paused track. For more info on pausing, use 'Pause --help'.
-""")
-
-
-def help_stop():
-    print("""
-Stop is used to completely unload a song from the CLMP. This will stop playing any music, and using 'Resume' will not work
-""")
-
-
-def help_skip():
-    print("""
-Skip is used to skip a song. If there is no song in queue the command will act similarly to the 'Stop' command
-""")
-
-
-def help_queue():
-    print("""
-Queue is used to set a song to play at the end of the current song. Due to limitations of pygame, only one song can be queued at a time.
-Attempting to queue a song while another song is queued will result in the new queued song overwriting the previous queued song.
-The song playing will remain unaffected.
-""")
-
-
-def help_volume():
-    print("""
-Volume is used to set the volume of playback. By using volume --status you can get the current volume. Due to how pygame works, the
-percentage you see may be slightly off from the volume you set. The syntax for this command is 'Volume [1-100]'.
-""")
-
 
 def show_list(song_names):
     for i in range(len(song_names)):
@@ -162,19 +106,6 @@ def show_list(song_names):
             if input(">>> ").lower() == "q":
                 break
         print(song_names[i])
-
-
-def commands():
-    print("""
-Play
-List
-Pause
-Resume
-Stop
-Skip
-Queue
-Commands""")
-
 
 if __name__ == "__main__":
     main()
